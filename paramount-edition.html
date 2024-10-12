@@ -14,33 +14,73 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background-color: #000;
-            color: #ffd700;
             font-family: 'Montserrat', sans-serif;
+            transition: all 0.5s ease;
         }
         .cormorant {
             font-family: 'Cormorant', serif;
+        }
+        .gold-theme {
+            background-color: #000;
+            color: #ffd700;
+        }
+        .diamond-theme {
+            background-color: #0a1929;
+            color: #e0f7fa;
         }
         .gold-text {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .diamond-text {
+            background: linear-gradient(to right, #b9d1db, #e0f7fa, #b2ebf2, #80deea, #4dd0e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .link-item {
-            background: rgba(255, 215, 0, 0.05);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.1);
             transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .gold-theme .link-item {
+            background: rgba(255, 215, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+        }
+        .diamond-theme .link-item {
+            background: rgba(224, 247, 250, 0.05);
+            box-shadow: 0 10px 30px rgba(224, 247, 250, 0.1);
+        }
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .gold-theme .link-item::before {
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0) 70%);
+        }
+        .diamond-theme .link-item::before {
+            background: radial-gradient(circle, rgba(224,247,250,0.1) 0%, rgba(224,247,250,0) 70%);
         }
         .link-item:hover {
             transform: translateY(-15px) scale(1.05);
+        }
+        .gold-theme .link-item:hover {
             box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
             background: rgba(255, 215, 0, 0.1);
+        }
+        .diamond-theme .link-item:hover {
+            box-shadow: 0 30px 60px rgba(224, 247, 250, 0.3);
+            background: rgba(224, 247, 250, 0.1);
+        }
+        .link-item:hover::before {
+            opacity: 1;
         }
         #canvas-container {
             position: fixed;
@@ -53,7 +93,6 @@
         .cursor {
             width: 20px;
             height: 20px;
-            border: 2px solid #ffd700;
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
@@ -61,16 +100,27 @@
             transition: all 0.1s ease;
             transform: translate(-50%, -50%);
         }
+        .gold-theme .cursor {
+            border: 2px solid #ffd700;
+        }
+        .diamond-theme .cursor {
+            border: 2px solid #e0f7fa;
+        }
         .cursor-trail {
             width: 10px;
             height: 10px;
-            background: rgba(255, 215, 0, 0.5);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9998;
             transition: all 0.1s ease;
             transform: translate(-50%, -50%);
+        }
+        .gold-theme .cursor-trail {
+            background: rgba(255, 215, 0, 0.5);
+        }
+        .diamond-theme .cursor-trail {
+            background: rgba(224, 247, 250, 0.5);
         }
         .status-tag {
             position: absolute;
@@ -79,15 +129,82 @@
             padding: 5px 10px;
             border-radius: 15px;
             font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+        }
+        .gold-theme .status-tag {
             background: rgba(255, 215, 0, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+        .diamond-theme .status-tag {
+            background: rgba(224, 247, 250, 0.2);
+        }
+        .link-item h2 {
+            position: relative;
+            display: inline-block;
+        }
+        .link-item h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            transition: width 0.3s ease;
+        }
+        .gold-theme .link-item h2::after {
+            background: linear-gradient(to right, #bf953f, #fcf6ba);
+        }
+        .diamond-theme .link-item h2::after {
+            background: linear-gradient(to right, #b9d1db, #e0f7fa);
+        }
+        .link-item:hover h2::after {
+            width: 100%;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .gold-theme .theme-toggle {
+            background: linear-gradient(145deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .diamond-theme .theme-toggle {
+            background: linear-gradient(145deg, #b9d1db, #e0f7fa, #b2ebf2, #80deea, #4dd0e1);
+            box-shadow: 0 0 20px rgba(224, 247, 250, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .theme-toggle::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .gold-theme .theme-toggle::before {
+            background: #000 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 3L4 9v12h16V9l-8-6zm0 14.5c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>') no-repeat center center / 24px 24px;
+        }
+        .diamond-theme .theme-toggle::before {
+            background: #0a1929 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e0f7fa"><path d="M12 2L2 22h20L12 2zm0 4l6.54 14H5.46L12 6z"/></svg>') no-repeat center center / 24px 24px;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(45deg);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between py-20 overflow-hidden">
+<body class="gold-theme min-h-screen flex flex-col justify-between py-20 overflow-hidden">
     <div id="canvas-container"></div>
     <div class="cursor"></div>
     <div class="cursor-trail"></div>
+    <div class="theme-toggle" onclick="toggleTheme()"></div>
 
     <header class="text-center mb-16 relative z-10">
         <h1 class="cormorant text-8xl md:text-9xl font-bold mb-6 gold-text tracking-wider">LinkExpress</h1>
@@ -141,8 +258,8 @@
         const particleGroup = new THREE.Group();
         scene.add(particleGroup);
 
-        // Create particles
-        const particleCount = 1500;
+// Create particles
+        const particleCount = 1200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -162,6 +279,7 @@
 
         const material = new THREE.PointsMaterial({
             size: 0.05,
+            opacity: 0.6,
             vertexColors: true,
             blending: THREE.AdditiveBlending,
             transparent: true
@@ -232,7 +350,47 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-        
-        </script>
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const isGoldTheme = body.classList.contains('gold-theme');
+            
+            if (isGoldTheme) {
+                body.classList.remove('gold-theme');
+                body.classList.add('diamond-theme');
+                updateThemeColors('#e0f7fa', '#0a1929');
+            } else {
+                body.classList.remove('diamond-theme');
+                body.classList.add('gold-theme');
+                updateThemeColors('#ffd700', '#000000');
+            }
+
+            // Update particles color
+            const colors = particles.geometry.attributes.color.array;
+            for (let i = 0; i < colors.length; i += 3) {
+                if (isGoldTheme) {
+                    colors[i] = 0.7 + Math.random() * 0.3;     // R
+                    colors[i + 1] = 0.9 + Math.random() * 0.1; // G
+                    colors[i + 2] = 0.9 + Math.random() * 0.1; // B
+                } else {
+                    colors[i] = 0.7 + Math.random() * 0.3;     // R
+                    colors[i + 1] = 0.7 + Math.random() * 0.3; // G
+                    colors[i + 2] = 0.4 + Math.random() * 0.3; // B
+                }
+            }
+            particles.geometry.attributes.color.needsUpdate = true;
+
+            // Animate theme change
+            gsap.to('body', { backgroundColor: isGoldTheme ? '#0a1929' : '#000000', duration: 0.5 });
+            gsap.to('.gold-text, .diamond-text', { color: isGoldTheme ? '#e0f7fa' : '#ffd700', duration: 0.5 });
+        }
+
+        function updateThemeColors(primaryColor, bgColor) {
+            const root = document.documentElement;
+            root.style.setProperty('--primary-color', primaryColor);
+            root.style.setProperty('--bg-color', bgColor);
+        }
+    </script>
 </body>
 </html>
