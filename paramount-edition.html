@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkExpress - The Epitome of Luxury</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #ffd700;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .cormorant {
+            font-family: 'Cormorant', serif;
+        }
+        .gold-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .link-item {
+            background: rgba(255, 215, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .link-item:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.1);
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-trail {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        .status-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between py-20 overflow-hidden">
+    <div id="canvas-container"></div>
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <header class="text-center mb-16 relative z-10">
+        <h1 class="cormorant text-8xl md:text-9xl font-bold mb-6 gold-text tracking-wider">LinkExpress</h1>
+        <p class="text-2xl md:text-3xl tracking-widest font-light gold-text">Transcending the Boundaries of Luxury</p>
+    </header>
+    
+    <main class="w-full max-w-7xl px-4 relative z-10 mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
+            <a href="https://datakid-github-io.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">خارجي قوي عاملة</h2>
+                <span class="status-tag">Closed</span>
+            </a>
+            <a href="https://datakid2.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">خارجي طلاب</h2>
+                <span class="status-tag">Closed</span>
+            </a>
+            <a href="https://finalapp-nine.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">مجموعات دوائية</h2>
+            </a>
+            <a href="https://searchbar-five-beta.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">لستة الادوية</h2>
+            </a>
+            <a href="#" onclick="window.open(['https://newlist-eta.vercel.app/', 'https://newlist2.vercel.app/'][Math.floor(Math.random() * 2)], '_blank'); return false;" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">المنفذ والتحمل</h2>
+            </a>
+            <a href="https://protocols-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">بروتوكولات الصرف</h2>
+            </a>
+            <a href="https://simpledashboard21.netlify.app/" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group md:col-span-2 lg:col-span-3">
+                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">بيانات الخارجي</h2>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create a group to hold our particles
+        const particleGroup = new THREE.Group();
+        scene.add(particleGroup);
+
+        // Create particles
+        const particleCount = 1500;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 10;
+            positions[i + 1] = (Math.random() - 0.5) * 10;
+            positions[i + 2] = (Math.random() - 0.5) * 10;
+
+            colors[i] = 0.7 + Math.random() * 0.3;
+            colors[i + 1] = 0.7 + Math.random() * 0.3;
+            colors[i + 2] = 0.4 + Math.random() * 0.3;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        particleGroup.add(particles);
+
+        camera.position.z = 5;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            particleGroup.rotation.x += 0.0005;
+            particleGroup.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("header", {
+            duration: 2,
+            y: -100,
+            opacity: 0.4,
+            ease: "power3.out"
+        });
+
+        gsap.from(".link-item", {
+            duration: 1.5,
+            y: 100,
+            opacity: 0.4,
+            stagger: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: "main",
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: 1
+            }
+        });
+
+        // Cursor effects
+        const cursor = document.querySelector('.cursor');
+        const cursorTrail = document.querySelector('.cursor-trail');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { duration: 0.23, left: e.clientX, top: e.clientY });
+            gsap.to(cursorTrail, { duration: 0.5, left: e.clientX, top: e.clientY });
+        });
+
+        // Hover effects for link items
+        document.querySelectorAll('.link-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { duration: 0.3, scale: 1.5, opacity: 0.5 });
+                gsap.to(item.querySelector('h2'), { duration: 0.3, scale: 1.05, y: -5 });
+            });
+            item.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { duration: 0.3, scale: 1, opacity: 1 });
+                gsap.to(item.querySelector('h2'), { duration: 0.3, scale: 1, y: 0 });
+            });
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        </script>
+</body>
+</html>
