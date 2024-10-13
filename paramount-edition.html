@@ -25,8 +25,8 @@
             color: #ffd700;
         }
         .diamond-theme {
-            background-color: #0a1929;
-            color: #e0f7fa;
+            background-color: #010b14;
+            color: #ffffff;
         }
         .gold-text {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
@@ -34,9 +34,14 @@
             -webkit-text-fill-color: transparent;
         }
         .diamond-text {
-            background: linear-gradient(to right, #b9d1db, #e0f7fa, #b2ebf2, #80deea, #4dd0e1);
+            background: linear-gradient(45deg, #f0f9ff 25%, #e1f5fe 50%, #b3e5fc 75%, #81d4fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: diamond-shimmer 5s linear infinite;
+        }
+        @keyframes diamond-shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         .link-item {
             backdrop-filter: blur(10px);
@@ -241,7 +246,7 @@
             </a>
             <a href="https://simpledashboard21.netlify.app/" class="link-item rounded-2xl p-12 text-center relative overflow-hidden group md:col-span-2 lg:col-span-3">
                 <div class="absolute inset-0 bg-gradient-to-br from-transparent to-gold opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">بيانات الخارجي</h2>
+               <h2 class="text-3xl font-semibold mb-4 cormorant gold-text">بيانات الخارجي</h2>
             </a>
         </div>
     </main>
@@ -258,7 +263,7 @@
         const particleGroup = new THREE.Group();
         scene.add(particleGroup);
 
-// Create particles
+        // Create particles
         const particleCount = 1200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -279,7 +284,7 @@
 
         const material = new THREE.PointsMaterial({
             size: 0.05,
-            opacity: 0.6,
+            opacity: 0.35,
             vertexColors: true,
             blending: THREE.AdditiveBlending,
             transparent: true
@@ -351,46 +356,53 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Theme toggle function
-        function toggleTheme() {
-            const body = document.body;
-            const isGoldTheme = body.classList.contains('gold-theme');
-            
-            if (isGoldTheme) {
-                body.classList.remove('gold-theme');
-                body.classList.add('diamond-theme');
-                updateThemeColors('#e0f7fa', '#0a1929');
-            } else {
-                body.classList.remove('diamond-theme');
-                body.classList.add('gold-theme');
-                updateThemeColors('#ffd700', '#000000');
-            }
-
-            // Update particles color
-            const colors = particles.geometry.attributes.color.array;
-            for (let i = 0; i < colors.length; i += 3) {
-                if (isGoldTheme) {
-                    colors[i] = 0.7 + Math.random() * 0.3;     // R
-                    colors[i + 1] = 0.9 + Math.random() * 0.1; // G
-                    colors[i + 2] = 0.9 + Math.random() * 0.1; // B
-                } else {
-                    colors[i] = 0.7 + Math.random() * 0.3;     // R
-                    colors[i + 1] = 0.7 + Math.random() * 0.3; // G
-                    colors[i + 2] = 0.4 + Math.random() * 0.3; // B
-                }
-            }
-            particles.geometry.attributes.color.needsUpdate = true;
-
-            // Animate theme change
-            gsap.to('body', { backgroundColor: isGoldTheme ? '#0a1929' : '#000000', duration: 0.5 });
-            gsap.to('.gold-text, .diamond-text', { color: isGoldTheme ? '#e0f7fa' : '#ffd700', duration: 0.5 });
+// Theme toggle function
+function toggleTheme() {
+    const body = document.body;
+    const isGoldTheme = body.classList.contains('gold-theme');
+    
+    if (isGoldTheme) {
+        body.classList.remove('gold-theme');
+        body.classList.add('diamond-theme');
+        updateThemeColors('#e0f7fa', '#010b14');
+    } else {
+        body.classList.remove('diamond-theme');
+        body.classList.add('gold-theme');
+        updateThemeColors('#ffd700', '#000000');
+    }
+    
+    // Update particles color
+    const colors = particles.geometry.attributes.color.array;
+    for (let i = 0; i < colors.length; i += 3) {
+        if (isGoldTheme) {
+            // Switching to diamond theme
+            colors[i] = 1.0;     // R
+            colors[i + 1] = 1.0; // G
+            colors[i + 2] = 1.0; // B
+        } else {
+            // Switching to gold theme
+            colors[i] = 1.0;     // R
+            colors[i + 1] = 0.84; // G
+            colors[i + 2] = 0.0; // B
         }
+    }
+    particles.geometry.attributes.color.needsUpdate = true;
+    
+    // Update text classes
+    document.querySelectorAll('.gold-text, .diamond-text').forEach(el => {
+        el.classList.toggle('gold-text');
+        el.classList.toggle('diamond-text');
+    });
+    
+    // Animate theme change
+    gsap.to('body', { backgroundColor: isGoldTheme ? '#010b14' : '#000000', duration: 0.5 });
+}
 
-        function updateThemeColors(primaryColor, bgColor) {
-            const root = document.documentElement;
-            root.style.setProperty('--primary-color', primaryColor);
-            root.style.setProperty('--bg-color', bgColor);
-        }
+function updateThemeColors(primaryColor, bgColor) {
+    const root = document.documentElement;
+    root.style.setProperty('--primary-color', primaryColor);
+    root.style.setProperty('--bg-color', bgColor);
+}
     </script>
 </body>
 </html>
