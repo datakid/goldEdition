@@ -223,7 +223,7 @@
     }
 
     .card:hover .card-icon {
-      transform: scale(1.15);
+      transform: rotate(360deg) scale(1.15);
       filter: drop-shadow(0 0 18px rgba(198, 169, 105, 0.4));
     }
 
@@ -242,6 +242,28 @@
       transition: all 0.3s ease;
       letter-spacing: 0.03em;
       line-height: 1.4;
+      position: relative;
+    }
+
+    /* Added underline effect */
+    .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--metallic-mid),
+        var(--metallic-highlight)
+      );
+      transition: width 0.3s ease;
+    }
+
+    .card:hover .card-title::after {
+      width: 80%;
     }
 
     .card:hover .card-title {
@@ -361,7 +383,8 @@
         const icon = card.querySelector('.card-icon');
         const title = card.querySelector('.card-title');
         
-        icon.style.transform = `translate(${moveFactorX}px, ${moveFactorY}px) scale(1.15)`;
+        // Updated to use 360-degree rotation
+        icon.style.transform = `rotate(360deg) translate(${moveFactorX}px, ${moveFactorY}px) scale(1.15)`;
         title.style.transform = `translate(${moveFactorX * 0.5}px, ${moveFactorY * 0.5}px) scale(1.05)`;
       });
 
