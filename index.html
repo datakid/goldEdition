@@ -161,7 +161,6 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
-/* Ensure 3 columns on large screens */
 @media (min-width: 1200px) {
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -231,20 +230,48 @@ body {
     0 0 60px rgba(var(--glow-color), 0.2);
 }
 
-/* Disable hover effects on touch devices */
-@media (hover: none) {
-  .card:hover {
-    transform: none;
-    box-shadow: none;
-  }
-}
-
 .card:hover::before {
   transform: translateX(100%);
 }
 
 .card:hover::after {
   opacity: 1;
+}
+
+/* NEW: Preview Icon Styles */
+.preview-icon {
+  position: absolute;
+  top: clamp(1rem, 3vw, 2rem);
+  left: clamp(1rem, 3vw, 2rem);
+  z-index: 10;
+  width: clamp(36px, 5vw, 44px);
+  height: clamp(36px, 5vw, 44px);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .preview-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.preview-icon i {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--metallic-mid);
+  transition: color 1s ease, transform 0.3s ease;
+}
+
+.preview-icon:hover i {
+  color: var(--metallic-highlight);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(var(--glow-color), 0.5));
 }
 
 .card-content {
@@ -412,15 +439,15 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.95);
   width: min(90vw, 1200px);
-  height: min(80vh, 800px);
-  border: none;
-  border-radius: clamp(8px, 1vw, 12px);
+  height: min(90vh, 800px);
+  border: 2px solid rgba(var(--glow-color), 0.5);
+  border-radius: clamp(8px, 1.5vw, 12px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s 0.4s;
   z-index: 1000;
 }
 
@@ -433,15 +460,55 @@ body {
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s ease, visibility 0s 0.4s;
   z-index: 999;
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
+/* NEW: Close Preview Button */
+.close-preview {
+    position: fixed;
+    top: calc(5vh - clamp(16px, 3vw, 24px));
+    right: calc(5vw - clamp(16px, 3vw, 24px));
+    width: clamp(32px, 5vw, 48px);
+    height: clamp(32px, 5vw, 48px);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--metallic-mid);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: all 0.4s ease;
+    line-height: 1;
+}
+
+.close-preview:hover {
+    color: var(--metallic-highlight);
+    background-color: rgba(0,0,0,0.7);
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Active states for preview */
 .preview-active {
   opacity: 1;
   visibility: visible;
+  transition-delay: 0s;
 }
+.preview-iframe.preview-active {
+    transform: translate(-50%, -50%) scale(1);
+}
+.close-preview.preview-active {
+    transform: scale(1);
+}
+
+
 .particle {
   position: fixed;
   pointer-events: none;
@@ -455,137 +522,14 @@ body {
   transition: background 1s ease;
 }
 
-.preview-iframe {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(90vw, 1200px);
-  height: min(90vh, 800px);
-  border: none;
-  border-radius: clamp(8px, 1.5vw, 12px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
-}
-
-.preview-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 999;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-}
-
-.preview-active {
-  opacity: 1;
-  visibility: visible;
-}
-
 @keyframes shimmer {
   0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
 }
 
-/* Enhanced Media Queries */
-@media (max-width: 1400px) {
-  .cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.5rem, 3vw, 2.75rem);
-    padding: clamp(1.5rem, 3vw, 2rem);
-  }
-  
-  .title {
-    font-size: clamp(3.5rem, 6vw, 5rem);
-  }
-  
-  .icon-container {
-    width: clamp(90px, 12vw, 110px);
-    height: clamp(90px, 12vw, 110px);
-  }
-  
-  .card-icon {
-    font-size: clamp(2.75rem, 4vw, 3.5rem);
-  }
-  
-  .card-title {
-    font-size: clamp(1.75rem, 2.5vw, 2rem);
-  }
-}
-
-@media (max-width: 1200px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1.25rem, 2.5vw, 2.75rem);
-  }
-  
-  .card {
-    min-height: clamp(280px, 50vh, var(--card-height));
-  }
-  
-  .card-content {
-    padding: clamp(1.25rem, 3vw, 2.5rem);
-  }
-  
-  .title {
-    font-size: clamp(3rem, 5vw, 4rem);
-    letter-spacing: 0.2em;
-  }
-}
-
 @media (max-width: 768px) {
   .cards-grid {
     grid-template-columns: 1fr;
-    gap: clamp(1rem, 2vw, 2.5rem);
-    padding: clamp(1rem, 2vw, 1.5rem);
-  }
-  
-  .title-container {
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-    padding: clamp(1rem, 2vw, 1.5rem);
-  }
-  
-  .title {
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    letter-spacing: 0.15em;
-  }
-  
-  .card {
-    min-height: clamp(250px, 45vh, var(--card-height));
-  }
-  
-  .card-content {
-    padding: clamp(1.25rem, 2.5vw, 2rem);
-  }
-  
-  .icon-container {
-    width: clamp(80px, 10vw, 100px);
-    height: clamp(80px, 10vw, 100px);
-    margin-bottom: clamp(1.25rem, 3vw, 2rem);
-  }
-  
-  .card-icon {
-    font-size: clamp(2.5rem, 3.5vw, 3.25rem);
-  }
-  
-  .card-title {
-    font-size: clamp(1.5rem, 2vw, 1.875rem);
-    letter-spacing: 0.03em;
-  }
-  
-  .card-number {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    top: 1.5rem;
-    right: 1.5rem;
   }
 }
 
@@ -593,86 +537,21 @@ body {
 @media (hover: none) {
   .card {
     transform: none !important;
-    transition: opacity 0.3s ease;
   }
-  
-  .card:active {
-    opacity: 0.8;
-  }
-  
-  .card::before,
-  .card::after {
-    display: none;
-  }
-  
-  .icon-container::before {
-    opacity: 1;
-  }
-  
-  .card-title::after {
-    width: 85%;
-    opacity: 0.7;
-  }
-  
-  .particle {
-    display: none;
-  }
+  .card:active { opacity: 0.8; }
+  .card::before, .card::after { display: none; }
+  .icon-container::before { opacity: 1; }
+  .card-title::after { width: 85%; opacity: 0.7; }
+  .particle { display: none; }
+  .preview-icon { opacity: 0.8; transform: scale(1); }
 }
 
-/* Reduced Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .card-icon,
-  .card-title,
-  .icon-container,
-  .preview-iframe,
-  .preview-overlay,
-  .particle {
+  * {
     transition: none !important;
     animation: none !important;
   }
-  
-  .card::before {
-    display: none;
-  }
-  
-  @keyframes shimmer {
-    0%, 100% { background-position: 0% 50%; }
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .card {
-    border: 2px solid #fff;
-    background: #000;
-  }
-  
-  .card-title,
-  .card-icon,
-  .card-number {
-    background: none;
-    color: #fff;
-    -webkit-text-fill-color: #fff;
-  }
-  
-  .icon-container::before {
-    background: #fff;
-  }
-}
-
-/* Dark Mode Optimizations */
-@media (prefers-color-scheme: dark) {
-  .preview-overlay {
-    background: rgba(0, 0, 0, 0.9);
-  }
-  
-  .card {
-    background: linear-gradient(145deg, 
-      rgba(20, 20, 20, 0.95),
-      rgba(5, 5, 5, 0.98)
-    );
-  }
+  .card::before { display: none; }
 }
   </style>
 </head>
@@ -685,6 +564,7 @@ body {
 
   <div class="cards-grid">
     <a href="https://datakid-github-io.vercel.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">01</span>
         <div class="icon-container">
@@ -695,6 +575,7 @@ body {
     </a>
 
     <a href="https://datakid2.vercel.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">02</span>
         <div class="icon-container">
@@ -705,6 +586,7 @@ body {
     </a>
 
     <a href="https://celadon-panda-9cbc15.netlify.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">03</span>
         <div class="icon-container">
@@ -715,6 +597,7 @@ body {
     </a>
 
     <a href="https://searchbar-five-beta.vercel.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">04</span>
         <div class="icon-container">
@@ -725,6 +608,7 @@ body {
     </a>
 
     <a href="https://newlist-eta.vercel.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">05</span>
         <div class="icon-container">
@@ -735,6 +619,7 @@ body {
     </a>
 
     <a href="https://protocols-one.vercel.app/" class="card" target="_blank">
+      <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">06</span>
         <div class="icon-container">
@@ -747,38 +632,31 @@ body {
 
   <div class="preview-overlay"></div>
   <iframe class="preview-iframe" frameborder="0"></iframe>
+  <span class="close-preview">&times;</span>
 
 <script>
 const themes = {
   gold: {
-    light: '#f4e4b5',
-    mid: '#d4b878',
-    dark: '#947b52',
-    shadow: '#4d3f2a',
-    highlight: '#fff6dd',
-    textureColor: '148, 123, 82',
-    textureColorLight: '212, 184, 120',
-    glowColor: '212, 184, 120'
+    light: '#f4e4b5', mid: '#d4b878', dark: '#947b52', shadow: '#4d3f2a', highlight: '#fff6dd',
+    textureColor: '148, 123, 82', textureColorLight: '212, 184, 120', glowColor: '212, 184, 120'
   },
   silver: {
-    light: '#f5f5f7',
-    mid: '#c8c8c8',
-    dark: '#808080',
-    shadow: '#404040',
-    highlight: '#ffffff',
-    textureColor: '128, 128, 128',
-    textureColorLight: '200, 200, 200',
-    glowColor: '200, 200, 200'
+    light: '#f5f5f7', mid: '#c8c8c8', dark: '#808080', shadow: '#404040', highlight: '#ffffff',
+    textureColor: '128, 128, 128', textureColorLight: '200, 200, 200', glowColor: '200, 200, 200'
   },
   rosePlatinum: {
-    light: '#fde8f0',
-    mid: '#e4b3c3',
-    dark: '#ba7889',
-    shadow: '#644246',
-    highlight: '#fff0f5',
-    textureColor: '186, 120, 137',
-    textureColorLight: '228, 179, 195',
-    glowColor: '228, 179, 195'
+    light: '#fde8f0', mid: '#e4b3c3', dark: '#ba7889', shadow: '#644246', highlight: '#fff0f5',
+    textureColor: '186, 120, 137', textureColorLight: '228, 179, 195', glowColor: '228, 179, 195'
+  },
+  // NEW: Elegant Sapphire Theme
+  sapphire: {
+    light: '#e0e8f4', mid: '#a0b8d8', dark: '#486898', shadow: '#203048', highlight: '#ffffff',
+    textureColor: '72, 104, 152', textureColorLight: '160, 184, 216', glowColor: '160, 184, 216'
+  },
+  // NEW: Premium Amethyst Theme
+  amethyst: {
+    light: '#f2e8fd', mid: '#c3a4e4', dark: '#8964ba', shadow: '#463264', highlight: '#fff0f5',
+    textureColor: '137, 100, 186', textureColorLight: '195, 164, 228', glowColor: '195, 164, 228'
   }
 };
 
@@ -789,6 +667,10 @@ function setTheme(themeName) {
   const theme = themes[themeName];
   const root = document.documentElement;
   
+  Object.keys(theme).forEach(key => {
+    const cssVar = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+    root.style.setProperty(cssVar, theme[key]);
+  });
   root.style.setProperty('--metallic-light', theme.light);
   root.style.setProperty('--metallic-mid', theme.mid);
   root.style.setProperty('--metallic-dark', theme.dark);
@@ -805,7 +687,30 @@ function rotateTheme() {
 }
 
 setTheme(themeKeys[currentThemeIndex]);
-setInterval(rotateTheme, 30000);
+setInterval(rotateTheme, 10000);
+
+const previewOverlay = document.querySelector('.preview-overlay');
+const previewIframe = document.querySelector('.preview-iframe');
+const closePreviewBtn = document.querySelector('.close-preview');
+
+const showPreview = (url) => {
+  previewIframe.src = url;
+  previewOverlay.classList.add('preview-active');
+  previewIframe.classList.add('preview-active');
+  closePreviewBtn.classList.add('preview-active');
+  document.body.style.overflow = 'hidden'; // Prevent scrolling while preview is open
+};
+  
+const hidePreview = () => {
+  previewOverlay.classList.remove('preview-active');
+  previewIframe.classList.remove('preview-active');
+  closePreviewBtn.classList.remove('preview-active');
+  setTimeout(() => { 
+    previewIframe.src = ''; 
+    document.body.style.overflow = '';
+  }, 400); 
+};
+
 
 document.querySelectorAll('.card').forEach(card => {
   const particlesContainer = document.createElement('div');
@@ -815,116 +720,60 @@ document.querySelectorAll('.card').forEach(card => {
   const createParticle = (x, y) => {
     const particle = document.createElement('div');
     particle.className = 'particle';
+    particlesContainer.appendChild(particle);
     particle.style.left = `${x}px`;
     particle.style.top = `${y}px`;
-    particlesContainer.appendChild(particle);
     
     const angle = Math.random() * Math.PI * 2;
-    const velocity = 1 + Math.random() * 2;
+    const velocity = Math.random() * 3 + 1;
     const dx = Math.cos(angle) * velocity;
-    const dy = Math.sin(angle) * velocity - 2;
+    const dy = Math.sin(angle) * velocity - 2; // Bias upwards
     
-    let opacity = 0.8;
-    let scale = 1;
-    let posX = x;
-    let posY = y;
-    
-    const animate = () => {
-      if (opacity <= 0) {
+    const life = 50 + Math.random() * 50;
+    let lifeLeft = life;
+
+    function animate() {
+      if (lifeLeft <= 0) {
         particle.remove();
         return;
       }
-      
-      posX += dx;
-      posY += dy;
-      opacity -= 0.02;
-      scale -= 0.02;
-      
-      particle.style.transform = `translate(${posX - x}px, ${posY - y}px) scale(${scale})`;
-      particle.style.opacity = opacity;
-      
+      particle.style.transform = `translate(${dx * (life - lifeLeft)}px, ${dy * (life - lifeLeft)}px)`;
+      particle.style.opacity = lifeLeft / life;
+      lifeLeft--;
       requestAnimationFrame(animate);
-    };
-    
-    requestAnimationFrame(animate);
-    
-    setTimeout(() => {
-      particle.remove();
-    }, 1000);
-  };
-
-  let hoverTimer;
-  const previewOverlay = document.querySelector('.preview-overlay');
-  const previewIframe = document.querySelector('.preview-iframe');
-  
-  const showPreview = (url) => {
-    previewIframe.src = url;
-    previewOverlay.classList.add('preview-active');
-    previewIframe.classList.add('preview-active');
+    }
+    animate();
   };
   
-  const hidePreview = () => {
-    previewOverlay.classList.remove('preview-active');
-    previewIframe.classList.remove('preview-active');
-    previewIframe.src = '';
-  };
+  card.addEventListener('mousemove', (e) => {
+     if (Math.random() > 0.7) { // throttle particle creation
+        createParticle(e.clientX, e.clientY);
+     }
+  });
 
-  const handleMouseMove = (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    for (let i = 0; i < 2; i++) {
-      createParticle(e.clientX, e.clientY);
-    }
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const distanceX = (x - centerX) / centerX;
-    const distanceY = (y - centerY) / centerY;
-
-    const highlight = card.querySelector('.icon-container');
-    if (highlight) {
-      highlight.style.transform = `
-        scale(1.1)
-        translate(${distanceX * 10}px, ${distanceY * 10}px)
-      `;
-    }
-  };
-
-  const handleMouseEnter = () => {
-    card.style.transform = 'translateY(-15px)';
-    const url = card.getAttribute('href');
-    hoverTimer = setTimeout(() => {
+  const previewIcon = card.querySelector('.preview-icon');
+  if (previewIcon) {
+    previewIcon.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent the <a> tag from navigating
+      e.stopPropagation(); // Stop the click from propagating to the card link
+      const url = card.getAttribute('href');
       showPreview(url);
-    }, 3000);
-  };
+    });
+  }
 
-  const handleMouseLeave = () => {
-    clearTimeout(hoverTimer);
-    hidePreview();
-    card.style.transform = 'translateY(0)';
-    const highlight = card.querySelector('.icon-container');
-    if (highlight) {
-      highlight.style.transform = 'scale(1)';
-    }
-  };
-
+  // Animate cards on load
   card.style.opacity = '0';
   card.style.transform = 'translateY(50px)';
-
+  const delay = 100 + Array.from(card.parentNode.children).indexOf(card) * 100;
   setTimeout(() => {
     card.style.transition = 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
     card.style.opacity = '1';
     card.style.transform = 'translateY(0)';
-  }, 100 + Array.from(card.parentNode.children).indexOf(card) * 100);
-
-  card.addEventListener('mouseenter', handleMouseEnter);
-  card.addEventListener('mouseleave', handleMouseLeave);
-  card.addEventListener('mousemove', handleMouseMove);
+  }, delay);
 });
 
 previewOverlay.addEventListener('click', hidePreview);
+closePreviewBtn.addEventListener('click', hidePreview);
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -942,27 +791,6 @@ window.addEventListener('load', () => {
     document.body.style.opacity = '1';
   });
 });
-
-function updateThemeTransitions() {
-  const elements = document.querySelectorAll([
-    '.card',
-    '.card-icon',
-    '.card-title',
-    '.icon-container::before',
-    '.title',
-    '.title::before',
-    '.title::after',
-    '.card-title::after',
-    '.particle',
-    '.background-texture'
-  ].join(','));
-  
-  elements.forEach(element => {
-    element.style.transition = 'all 1s ease';
-  });
-}
-
-updateThemeTransitions();
 </script>
 </body>
 </html>
