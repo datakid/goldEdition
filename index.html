@@ -607,7 +607,7 @@ body {
       </div>
     </a>
 
-    <a href="https://newlist-eta.vercel.app/" class="card" target="_blank">
+    <a href="https://remarkable-trifle-b2b303.netlify.app/" class="card" target="_blank">
       <div class="preview-icon"><i class="fas fa-eye"></i></div>
       <div class="card-content">
         <span class="card-number">05</span>
@@ -648,12 +648,10 @@ const themes = {
     light: '#fde8f0', mid: '#e4b3c3', dark: '#ba7889', shadow: '#644246', highlight: '#fff0f5',
     textureColor: '186, 120, 137', textureColorLight: '228, 179, 195', glowColor: '228, 179, 195'
   },
-  // NEW: Elegant Sapphire Theme
   sapphire: {
     light: '#e0e8f4', mid: '#a0b8d8', dark: '#486898', shadow: '#203048', highlight: '#ffffff',
     textureColor: '72, 104, 152', textureColorLight: '160, 184, 216', glowColor: '160, 184, 216'
   },
-  // NEW: Premium Amethyst Theme
   amethyst: {
     light: '#f2e8fd', mid: '#c3a4e4', dark: '#8964ba', shadow: '#463264', highlight: '#fff0f5',
     textureColor: '137, 100, 186', textureColorLight: '195, 164, 228', glowColor: '195, 164, 228'
@@ -698,7 +696,7 @@ const showPreview = (url) => {
   previewOverlay.classList.add('preview-active');
   previewIframe.classList.add('preview-active');
   closePreviewBtn.classList.add('preview-active');
-  document.body.style.overflow = 'hidden'; // Prevent scrolling while preview is open
+  document.body.style.overflow = 'hidden'; 
 };
   
 const hidePreview = () => {
@@ -727,7 +725,7 @@ document.querySelectorAll('.card').forEach(card => {
     const angle = Math.random() * Math.PI * 2;
     const velocity = Math.random() * 3 + 1;
     const dx = Math.cos(angle) * velocity;
-    const dy = Math.sin(angle) * velocity - 2; // Bias upwards
+    const dy = Math.sin(angle) * velocity - 2; 
     
     const life = 50 + Math.random() * 50;
     let lifeLeft = life;
