@@ -358,8 +358,9 @@ body.is-void .stage > .bento{display:none}
   --ch:var(--hue);
   background:var(--metal);opacity:.9;
   box-shadow:inset 0 0 0 1px oklch(100% 0 0 /.3);
-  transform:translateX(var(--ix,0px)) scaleX(var(--isq,1));
-  transition:transform 560ms var(--ease-pop), width 560ms var(--ease-pop), background 260ms linear;
+  translate:var(--ix,0px) 0;
+  scale:var(--isq,1) 1;
+  transition:translate 480ms var(--ease-pop), scale 260ms var(--ease-pop), width 480ms var(--ease-pop), background 260ms linear;
   pointer-events:none}
 .dock__b{position:relative;z-index:1;display:flex;align-items:center;gap:.55rem;
   padding:.68rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;white-space:nowrap;
@@ -381,7 +382,7 @@ body.is-void .stage > .bento{display:none}
   transition:opacity 220ms var(--ease),transform 380ms var(--ease-pop)}
 .toast.on .toast__b{opacity:1;transform:none}
 
-::view-transition-old(root),::view-transition-new(root){animation-duration:420ms}
+::view-transition-old(root),::view-transition-new(root){animation-duration:260ms}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;
     transition-duration:.01ms !important;scroll-behavior:auto !important}
