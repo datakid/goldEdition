@@ -162,6 +162,7 @@ html.refract .dock{
 }
 
 .shell{width:var(--shell);margin-inline:auto}
+@keyframes rise-in{from{opacity:0;transform:translateY(-10px)}}
 .topbar{
   --r: var(--r-xl);
   position:sticky;top:var(--s4);z-index:30;
@@ -169,6 +170,7 @@ html.refract .dock{
   padding: var(--s3) var(--s3) var(--s3) var(--s5);
   margin-block-start:var(--s4);
   transition: padding var(--t-med) var(--ease);
+  animation:rise-in 620ms var(--ease) backwards;
 }
 body.scrolled .topbar{padding-block:.5rem}
 .brand{display:flex;align-items:center;gap:var(--s3);flex:none}
@@ -215,8 +217,9 @@ body.scrolled .topbar{padding-block:.5rem}
   transform:translateX(var(--tx,0px));
   transition:transform 480ms var(--ease-pop), width 480ms var(--ease-pop)}
 .seg__btn{position:relative;z-index:1;min-width:34px;height:32px;display:grid;place-items:center;border-radius:var(--r-pill);
-  cursor:pointer;color:var(--muted);transition:color var(--t-fast) var(--ease)}
+  cursor:pointer;color:var(--muted);transition:color var(--t-fast) var(--ease), opacity 160ms var(--ease)}
 .seg__btn[aria-checked="true"]{color:var(--ink)}
+.seg__btn:active{opacity:.6}
 .seg__btn svg{width:15px;height:15px}
 .lang{min-width:46px;height:40px;border-radius:var(--r-pill);cursor:pointer;
   font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted);
@@ -224,8 +227,11 @@ body.scrolled .topbar{padding-block:.5rem}
   box-shadow:inset 0 0 0 1px light-dark(oklch(100% 0 0 /.7),oklch(100% 0 0 /.09));
   transition:color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease)}
 .lang:hover{color:var(--ink);transform:translateY(-1px)}
+.lang:active{transform:translateY(0) scale(.94)}
 
-.mast{position:relative;z-index:2;padding-block:var(--s7) var(--s5);max-width:46ch}
+@keyframes rise-in-up{from{opacity:0;transform:translateY(14px)}}
+.mast{position:relative;z-index:2;padding-block:var(--s7) var(--s5);max-width:46ch;
+  animation:rise-in-up 620ms var(--ease) 90ms backwards}
 .mast__k{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
 .mast__h{font-family:var(--f-disp);font-weight:600;line-height:1.08;letter-spacing:.002em;
   font-size:clamp(2.3rem,1.4rem + 3.3vw,3.9rem);margin-block-start:var(--s3)}
@@ -237,8 +243,9 @@ body.scrolled .topbar{padding-block:.5rem}
   font-size:.82rem;color:var(--ink);cursor:pointer;
   background:light-dark(oklch(100% 0 0 /.14),oklch(100% 0 0 /.05));
   box-shadow:inset 0 0 0 1px light-dark(oklch(0% 0 0 /.10),oklch(100% 0 0 /.10));
-  transition:box-shadow var(--t-fast) var(--ease)}
+  transition:box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease)}
 .chip:hover{box-shadow:inset 0 0 0 1px var(--accent-line)}
+.chip:active{transform:scale(.96)}
 .chip__bead{width:6px;height:6px;border-radius:1px;flex:none;background:var(--metal)}
 
 .stage{position:relative;z-index:2;padding-block-start:var(--s2);padding-block-end:var(--s7)}
@@ -252,7 +259,7 @@ body.scrolled .topbar{padding-block:.5rem}
   .card[data-span="2"]{grid-column:span 2}
 }
 
-@keyframes card-in{from{opacity:0;transform:translateY(10px)}}
+@keyframes card-in{from{opacity:0;transform:translateY(16px) scale(.96)}}
 .card{
   --r:26px;
   border-start-start-radius:26px;
@@ -261,13 +268,14 @@ body.scrolled .topbar{padding-block:.5rem}
   border-end-start-radius:7px;          
   position:relative;
   display:grid;grid-template-columns:56px 1fr;padding:0;overflow:hidden;
-  transform:translateY(var(--ty,0));
-  transition:transform 420ms var(--ease), box-shadow 380ms var(--ease), backdrop-filter 380ms var(--ease);
-  animation:card-in 380ms var(--ease) backwards;
-  animation-delay:calc(var(--i,0) * 20ms);
+  transform:translateY(var(--ty,0)) scale(var(--sc,1));
+  transition:transform 460ms var(--ease-pop), box-shadow 420ms var(--ease), backdrop-filter 380ms var(--ease);
+  animation:card-in 560ms var(--ease-pop) backwards;
+  animation-delay:calc(var(--i,0) * 24ms);
 }
 .card[data-hero="true"]{border-end-start-radius:26px;border-start-end-radius:7px}
-.card:hover,.card.is-active{--ty:-5px;--blur:14px;--sat:172%;--rim:1}
+.card:hover,.card.is-active{--ty:-6px;--sc:1.012;--blur:14px;--sat:172%;--rim:1}
+.card:active{--ty:-3px;--sc:.99}
 .card:hover{box-shadow:0 1px 2px oklch(0% 0 0/.14),
   0 26px 46px -28px light-dark(oklch(0% 0 0 /.4), oklch(0% 0 0 /.62)),
   0 0 0 1px light-dark(oklch(0% 0 0 /0), oklch(100% 0 0 /.045))}
@@ -298,8 +306,9 @@ body.scrolled .topbar{padding-block:.5rem}
   direction:ltr;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.22em;
   color:var(--faint);margin-block-start:auto;
 }
+@keyframes mark-pulse{0%,100%{box-shadow:0 0 0 3px var(--accent-soft)}50%{box-shadow:0 0 0 5px var(--accent-soft)}}
 .card__mark{width:4px;height:4px;border-radius:1px;background:var(--accent);
-  box-shadow:0 0 0 3px var(--accent-soft)}
+  box-shadow:0 0 0 3px var(--accent-soft);animation:mark-pulse 2.6s var(--ease-io) infinite}
 
 .card__body{display:flex;flex-direction:column;padding:1.15rem 1.25rem 1.05rem;
   position:relative;z-index:4;min-width:0;pointer-events:none}
@@ -327,6 +336,7 @@ html[dir="rtl"] .card__rule{--ro:right;--rd:left}
   border-block-end:1.5px solid transparent;cursor:pointer;
   transition:color 200ms var(--ease), border-color 200ms var(--ease)}
 .var:hover{color:var(--ink)}
+.var:active{opacity:.6}
 .var[aria-pressed="true"]{color:var(--ink);border-block-end-color:var(--accent);background:none}
 .var:focus-visible{box-shadow:none;outline:2px solid var(--accent);outline-offset:2px}
 
@@ -341,6 +351,7 @@ body.is-void .stage > .bento{display:none}
   position:fixed;z-index:40;inset-block-end:clamp(1rem,3vh,2rem);inset-inline:0;
   width:max-content;max-width:calc(100% - 2rem);margin-inline:auto;
   padding:7px;
+  animation:rise-in-up 620ms var(--ease) 170ms backwards;
 }
 .dock__in{position:relative;display:flex;gap:2px}
 .dock__ind{position:absolute;inset-block:0;left:0;width:var(--iw,86px);border-radius:var(--r-pill);
@@ -352,19 +363,22 @@ body.is-void .stage > .bento{display:none}
   pointer-events:none}
 .dock__b{position:relative;z-index:1;display:flex;align-items:center;gap:.55rem;
   padding:.68rem 1.15rem;border-radius:var(--r-pill);cursor:pointer;white-space:nowrap;
-  font-family:var(--f-ui);font-size:.87rem;color:var(--muted);transition:color 300ms var(--ease)}
+  font-family:var(--f-ui);font-size:.87rem;color:var(--muted);transition:color 300ms var(--ease), opacity 160ms var(--ease)}
 .dock__b:hover{color:var(--ink)}
+.dock__b:active{opacity:.62}
 .dock__b[aria-selected="true"]{color:var(--ink);font-weight:600}
 .dock__icon{width:18px;height:18px;display:grid;place-items:center;color:var(--faint);transition:color 300ms var(--ease)}
 .dock__icon svg{width:16px;height:16px}
 .dock__b[aria-selected="true"] .dock__icon{color:var(--accent)}
+@keyframes icon-pop{0%{transform:scale(1)}45%{transform:scale(1.2)}100%{transform:scale(1)}}
+.dock__b[aria-selected="true"] .dock__icon{animation:icon-pop 440ms var(--ease-pop)}
 .dock__n{font-family:var(--f-mono);font-size:.6rem;color:var(--faint)}
 @media (max-width:560px){.dock__b{padding:.65rem .8rem;font-size:.82rem}.dock__n{display:none}}
 
 .toast{position:fixed;inset-inline:0;bottom:6.6rem;z-index:60;display:flex;justify-content:center;pointer-events:none}
 .toast__b{--r:var(--r-pill);padding:.58rem 1.15rem;font-size:.8rem;font-family:var(--f-ui);
   opacity:0;transform:translateY(8px) scale(.96);
-  transition:opacity 260ms var(--ease),transform 260ms var(--ease)}
+  transition:opacity 220ms var(--ease),transform 380ms var(--ease-pop)}
 .toast.on .toast__b{opacity:1;transform:none}
 
 ::view-transition-old(root),::view-transition-new(root){animation-duration:420ms}
@@ -386,6 +400,12 @@ body.is-void .stage > .bento{display:none}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   :root{--glass-bg:light-dark(oklch(100% 0 0 /.9),oklch(26% .02 var(--hue-b) /.94))}
 }
+html{scrollbar-width:thin;scrollbar-color:light-dark(oklch(0% 0 0 /.16),oklch(100% 0 0 /.16)) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:light-dark(oklch(0% 0 0 /.16),oklch(100% 0 0 /.16));
+  border-radius:99px;border:2px solid var(--bg);background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:light-dark(oklch(0% 0 0 /.26),oklch(100% 0 0 /.26));background-clip:padding-box}
 </style>
 </head>
 <body>
@@ -457,7 +477,7 @@ body.is-void .stage > .bento{display:none}
 
 <div class="shell">
   <section class="mast">
-    <div class="mast__k" id="mast-k">MĪNĀ · 15</div>
+    <div class="mast__k" id="mast-k">MĪNĀ · 17</div>
     <h1 class="mast__h" id="mast-h"></h1>
     <p class="mast__p" id="mast-p"></p>
     <div class="recents" id="recents" hidden></div>
@@ -517,15 +537,17 @@ const DATA = [
   aliases:['roi','aid al-istithmar','return on investment','aid'],
   variants:[{key:'express',ar:'السريع',en:'Express',url:'https://roi-calc-express.vercel.app/',host:'roi-calc-express.vercel.app',aliases:['express','quick']},
             {key:'full',ar:'الكامل',en:'Full',url:'https://roi-calculator-eight-omega.vercel.app/',host:'roi-calculator-eight-omega.vercel.app',aliases:['full','kamel']}]},
- {id:'entity-tracker',group:'tools',folio:10,hue:262,isNew:true,url:'https://entity-tracker-pi.vercel.app/',host:'entity-tracker-pi.vercel.app',
-  ar:'بيان جهات متعاقدة',en:'Entity Tracker',dar:'متابعة بيانات الجهات المتعاقدة',den:'Contract log',
-  aliases:['bayan gehat mota3aqeda','entity tracker','contracted entities','gehat']},
- {id:'duckbench',group:'tools',folio:11,span:2,hue:70,isNew:true,url:'https://duckbench2.vercel.app/',host:'duckbench2.vercel.app',
-  ar:'تحليل البيانات',en:'DuckBench',dar:'استعلام DuckDB',den:'DuckDB queries',
-  aliases:['duckbench','tahlil el-bayanat','data analysis','duck']},
- {id:'survival-mirror',group:'tools',folio:12,hue:16,isNew:true,url:'https://survival-mirror.vercel.app/',host:'survival-mirror.vercel.app',
+ {id:'survival-mirror',group:'tools',folio:10,hue:16,isNew:true,url:'https://survival-mirror.vercel.app/',host:'survival-mirror.vercel.app',
   ar:'منحنى البقاء',en:'Survival Mirror',dar:'رسم منحني لاحتمالية البقاء',den:'Survival curves',
   aliases:['survival mirror','survival curve','monhana el-baqaa','baqaa']},
+ {id:'qisma-mizan',group:'tools',folio:11,span:2,hue:284,isNew:true,
+  ar:'قسمة العوائد',en:'Qisma / Mizan',dar:'قسمة ايرادات الهيئة',den:'Split + balance',
+  aliases:['qisma el-awaed','qisma','mizan','shareholders'],
+  variants:[{key:'mizan',ar:'ميزان',en:'Mizan',url:'https://m-izan.vercel.app/',host:'m-izan.vercel.app',aliases:['mizan']},
+            {key:'qisma',ar:'قسمة',en:'Qisma',url:'https://shareholders-coral.vercel.app/',host:'shareholders-coral.vercel.app',aliases:['qisma']}]},
+ {id:'plan-maker',group:'tools',folio:12,hue:330,isNew:true,url:'https://plan-maker-tan.vercel.app/',host:'plan-maker-tan.vercel.app',
+  ar:'الخطة',en:'Plan Maker',dar:'خطة مرور المنشآت',den:'Visit scheduling',
+  aliases:['plan maker','al-khotta','khotta','mrour','plan']},
 
  {id:'to-do',group:'experimental',folio:13,hue:328,isNew:true,url:'https://to-do-cyan-theta.vercel.app/',host:'to-do-cyan-theta.vercel.app',
   ar:'تقارير',en:'To Do',dar:'مهام وتقارير',den:'Tasks + reports',
@@ -533,11 +555,15 @@ const DATA = [
  {id:'dafter',group:'experimental',folio:14,hue:240,isNew:true,url:'https://daftar-psi-two.vercel.app/',host:'daftar-psi-two.vercel.app',
   ar:'دفتر الحركة',en:'Dafter',dar:'منصرف شهري',den:'Monthly ledger',
   aliases:['daftar el-haraka','dafter','movement log','daftar']},
- {id:'qisma-mizan',group:'experimental',folio:15,span:2,hue:284,isNew:true,
-  ar:'قسمة العوائد',en:'Qisma / Mizan',dar:'قسمة ايرادات الهيئة',den:'Split + balance',
-  aliases:['qisma el-awaed','qisma','mizan','shareholders'],
-  variants:[{key:'mizan',ar:'ميزان',en:'Mizan',url:'https://m-izan.vercel.app/',host:'m-izan.vercel.app',aliases:['mizan']},
-            {key:'qisma',ar:'قسمة',en:'Qisma',url:'https://shareholders-coral.vercel.app/',host:'shareholders-coral.vercel.app',aliases:['qisma']}]}
+ {id:'entity-tracker',group:'experimental',folio:15,hue:262,isNew:true,url:'https://entity-tracker-pi.vercel.app/',host:'entity-tracker-pi.vercel.app',
+  ar:'بيان جهات متعاقدة',en:'Entity Tracker',dar:'متابعة بيانات الجهات المتعاقدة',den:'Contract log',
+  aliases:['bayan gehat mota3aqeda','entity tracker','contracted entities','gehat']},
+ {id:'duckbench',group:'experimental',folio:16,span:2,hue:70,isNew:true,url:'https://duckbench2.vercel.app/',host:'duckbench2.vercel.app',
+  ar:'تحليل البيانات',en:'DuckBench',dar:'استعلام DuckDB',den:'DuckDB queries',
+  aliases:['duckbench','tahlil el-bayanat','data analysis','duck']},
+ {id:'draw',group:'experimental',folio:17,hue:140,isNew:true,url:'https://draw-gold.vercel.app/',host:'draw-gold.vercel.app',
+  ar:'بيان',en:'Draw',dar:'رسم البيانات',den:'Data charts',
+  aliases:['draw','bayan','resm','chart','graphs']}
 ];
 const BY_ID = Object.fromEntries(DATA.map(d => [d.id, d]));
 const GROUPS = ['core','tools','experimental'];
